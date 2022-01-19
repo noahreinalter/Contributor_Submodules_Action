@@ -1,19 +1,46 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as github from '@actions/github'
+const fs = require('fs');
+const exec = require('@actions/exec');
 
 async function run(): Promise<void> {
+  if(!checkIfValidUser()) return;
+
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const url: string = core.getInput('url');
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const splitUrl: string[] = url.split("/");
 
-    core.setOutput('time', new Date().toTimeString())
+    const username: string = splitUrl[splitUrl.length - 2];
+
+    await exec.exec('git submodule add ' + url + 'submodules/' + username);
+
+    fs.readdirSync('./submodules/' + username).forEach((file: string) => {
+      if (file.match('/^\d*$/g')) {
+        addLink(file, username);
+      }
+    });
+
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
+}
+
+async function addLink(year: string, username: string) {
+  if (!fs.existsSync(year)) {
+    fs.mkdirSync(year);
+  }
+  await exec.exec('ln -s ./submodules/' + username + '/' + year + ' ./' + year + '/' + username);
+}
+
+function checkIfValidUser(): boolean {
+  core.getInput('users').split(' ').forEach((user: string) => {
+    if (user == github.context.actor) {
+      return true;
+    }
+  });
+
+  return false;
 }
 
 run()

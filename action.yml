@@ -1,11 +1,12 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Contributor Submodules Action'
+description: 'A Action that automates adding submodules'
+author: 'noahreinalter'
 inputs:
-  milliseconds: # change this
+  url:
+    description: 'Url to the git repo'
+  users:
+    description: 'Allowed users(space separated) to add new submodules'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
 runs:
   using: 'node12'
   main: 'dist/index.js'
