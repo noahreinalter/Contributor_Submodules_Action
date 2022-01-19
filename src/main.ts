@@ -1,55 +1,68 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-const fs = require('fs');
-const exec = require('@actions/exec');
+const fs = require('fs')
+const exec = require('@actions/exec')
 
 async function run(): Promise<void> {
-  if (!checkIfValidUser()) return;
+  if (!checkIfValidUser()) return
 
   try {
-    const url: string = core.getInput('url');
+    const url: string = core.getInput('url')
 
-    const splitUrl: string[] = url.split("/");
+    const splitUrl: string[] = url.split('/')
 
-    const username: string = splitUrl[splitUrl.length - 2];
+    const username: string = splitUrl[splitUrl.length - 2]
 
-    await exec.exec('git submodule add ' + url + ' submodules/' + username);
+    await exec.exec('git submodule add ' + url + ' submodules/' + username)
 
-    const fileNames: string[] = fs.readdirSync('./submodules/' + username);
+    const fileNames: string[] = fs.readdirSync('./submodules/' + username)
 
-    core.debug('There are ' + fileNames.length.toString() + ' files in the new submodule');
+    core.debug(
+      'There are ' + fileNames.length.toString() + ' files in the new submodule'
+    )
 
     fileNames.forEach((file: string) => {
-      core.debug(file);
+      core.debug(file)
       if (file.match(/^\d*$/) != null) {
-        addLink(file, username);
+        addLink(file, username)
       }
-    });
-
+    })
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
 
 async function addLink(year: string, username: string) {
-  core.debug('Add ' + year + ' for ' + username);
+  core.debug('Add ' + year + ' for ' + username)
   if (!fs.existsSync(year)) {
-    core.debug('Create dir ' + year);
-    fs.mkdirSync(year);
+    core.debug('Create dir ' + year)
+    fs.mkdirSync(year)
   }
-  await exec.exec('ln -s ../submodules/' + username + '/' + year + ' ./' + year + '/' + username);
+  await exec.exec(
+    'ln -s ../submodules/' +
+      username +
+      '/' +
+      year +
+      ' ./' +
+      year +
+      '/' +
+      username
+  )
 }
 
 function checkIfValidUser(): boolean {
-  let isValid: boolean = false;
-  core.getInput('users').split(' ').forEach((user: string) => {
-    if (user == github.context.actor) {
-      core.debug(user + '==' + github.context.actor);
-      isValid = true;
-    }
-  });
+  let isValid: boolean = false
+  core
+    .getInput('users')
+    .split(' ')
+    .forEach((user: string) => {
+      if (user == github.context.actor) {
+        core.debug(user + '==' + github.context.actor)
+        isValid = true
+      }
+    })
 
-  return isValid;
+  return isValid
 }
 
 run()
