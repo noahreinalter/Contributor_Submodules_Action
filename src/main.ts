@@ -4,7 +4,7 @@ const fs = require('fs');
 const exec = require('@actions/exec');
 
 async function run(): Promise<void> {
-  if(!checkIfValidUser()) return;
+  if (!checkIfValidUser()) return;
 
   try {
     const url: string = core.getInput('url');
@@ -35,15 +35,15 @@ async function addLink(year: string, username: string) {
 }
 
 function checkIfValidUser(): boolean {
+  let isValid: boolean = false;
   core.getInput('users').split(' ').forEach((user: string) => {
     if (user == github.context.actor) {
       core.debug(user + '==' + github.context.actor);
-      return true;
+      isValid = true;
     }
   });
 
-  core.debug('Not valid user');
-  return false;
+  return isValid;
 }
 
 run()
