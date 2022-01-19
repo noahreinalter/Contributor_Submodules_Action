@@ -32,6 +32,7 @@ async function run(): Promise<void> {
 }
 
 async function addLink(year: string, username: string) {
+  core.debug('Add ' + year + ' for ' + username);
   if (!fs.existsSync(year)) {
     core.debug('Create dir ' + year);
     fs.mkdirSync(year);
