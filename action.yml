@@ -1,6 +1,9 @@
 name: 'Contributor Submodules Action'
 description: 'A Action that automates adding submodules'
 author: 'noahreinalter'
+branding:
+  icon: folder-plus
+  color: orange
 inputs:
   url:
     description: 'Url to the git repo'
