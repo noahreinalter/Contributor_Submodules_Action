@@ -15,7 +15,11 @@ async function run(): Promise<void> {
 
     await exec.exec('git submodule add ' + url + ' submodules/' + username);
 
-    fs.readdirSync('./submodules/' + username).forEach((file: string) => {
+    const fileNames: string[] = fs.readdirSync('./submodules/' + username);
+
+    core.debug('There are ' + fileNames.length.toString() + ' files in the new submodule');
+
+    fileNames.forEach((file: string) => {
       if (file.match('/^\d*$/g')) {
         addLink(file, username);
       }
