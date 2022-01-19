@@ -1,6 +1,6 @@
 # Contributor Submodules Action
 
-A Action that automates adding submodules
+A GitHub Action that automates adding submodules
 
 ```yaml
   - name: Contributor_Submodules_Action
