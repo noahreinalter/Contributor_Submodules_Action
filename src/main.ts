@@ -28,6 +28,7 @@ async function run(): Promise<void> {
 
 async function addLink(year: string, username: string) {
   if (!fs.existsSync(year)) {
+    core.debug('Create dir ' + year);
     fs.mkdirSync(year);
   }
   await exec.exec('ln -s ./submodules/' + username + '/' + year + ' ./' + year + '/' + username);
@@ -36,10 +37,12 @@ async function addLink(year: string, username: string) {
 function checkIfValidUser(): boolean {
   core.getInput('users').split(' ').forEach((user: string) => {
     if (user == github.context.actor) {
+      core.debug(user + '==' + github.context.actor);
       return true;
     }
   });
 
+  core.debug('Not valid user');
   return false;
 }
 
