@@ -37,7 +37,7 @@ async function addLink(year: string, username: string) {
     core.debug('Create dir ' + year);
     fs.mkdirSync(year);
   }
-  await exec.exec('ln -s ./submodules/' + username + '/' + year + ' ./' + year + '/' + username);
+  await exec.exec('ln -s ./submodules/' + username + '/' + year + ' ../' + year + '/' + username);
 }
 
 function checkIfValidUser(): boolean {
