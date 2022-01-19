@@ -13,7 +13,7 @@ async function run(): Promise<void> {
 
     const username: string = splitUrl[splitUrl.length - 2];
 
-    await exec.exec('git submodule add ' + url + 'submodules/' + username);
+    await exec.exec('git submodule add ' + url + ' submodules/' + username);
 
     fs.readdirSync('./submodules/' + username).forEach((file: string) => {
       if (file.match('/^\d*$/g')) {
