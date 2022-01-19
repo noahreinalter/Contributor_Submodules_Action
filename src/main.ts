@@ -20,6 +20,7 @@ async function run(): Promise<void> {
     core.debug('There are ' + fileNames.length.toString() + ' files in the new submodule');
 
     fileNames.forEach((file: string) => {
+      core.debug(file);
       if (file.match('/^\d*$/g')) {
         addLink(file, username);
       }
