@@ -21,7 +21,7 @@ async function run(): Promise<void> {
 
     fileNames.forEach((file: string) => {
       core.debug(file);
-      if (file.match('/^\d*$/') != null) {
+      if (file.match(/^\d*$/) != null) {
         addLink(file, username);
       }
     });
