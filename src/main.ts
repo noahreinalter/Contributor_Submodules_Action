@@ -24,7 +24,6 @@ async function run(): Promise<void> {
     const regex = new RegExp(core.getInput('regex'))
 
     for (const file of fileNames) {
-      core.debug(file)
       if (file.match(regex) != null) {
         addLink(file, username)
       }
@@ -34,27 +33,26 @@ async function run(): Promise<void> {
   }
 }
 
-async function addLink(year: string, username: string): Promise<void> {
-  core.debug(`Add ${year} for ${username}`)
-  if (!fs.existsSync(year)) {
-    core.debug(`Create dir ${year}`)
-    fs.mkdirSync(year)
+async function addLink(targedName: string, username: string): Promise<void> {
+  core.debug(`Add ${targedName} for ${username} if necessary`)
+  if (!fs.existsSync(targedName)) {
+    core.debug(`Create dir ${targedName}`)
+    fs.mkdirSync(targedName)
   }
   await exec.exec(
-    `ln -s ../submodules/${username}/${year} ./${year}/${username}`
+    `ln -s ../submodules/${username}/${targedName} ./${targedName}/${username}`
   )
 }
 
 function checkIfValidUser(): boolean {
-  let isValid = false
   for (const user of core.getInput('users').split(' ')) {
     if (user === github.context.actor) {
       core.debug(`${user}===${github.context.actor}`)
-      isValid = true
+      return true
     }
   }
 
-  return isValid
+  return false
 }
 
 run()
