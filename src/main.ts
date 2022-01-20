@@ -40,7 +40,7 @@ async function addSubmodule(url: string): Promise<void> {
 
   for (const file of fileNames) {
     core.debug(`File: ${file}`)
-    if (file.match(regex) != null) {
+    if (regex.test(file)) {
       core.debug(`Add link for file ${file}`)
       addLink(file, username)
     }
@@ -55,7 +55,7 @@ async function reloadAllSubmodules(): Promise<void> {
     const regex = RegExp(core.getInput('regex'))
 
     for (const file of fileNames) {
-      if (file.match(regex) != null) {
+      if (regex.test(file)) {
         addLink(file, submoduleName)
       }
     }
