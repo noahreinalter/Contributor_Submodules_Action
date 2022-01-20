@@ -34,29 +34,9 @@ async function addSubmodule(url: string): Promise<void> {
     `There are ${fileNames.length.toString()} files in the new submodule`
   )
 
-  const regex: RegExp = RegExp(core.getInput('regex'))
-
-  core.debug(core.getInput('regex').toString())
-
-  if (core.getInput('regex').toString() === '^\\d*$') {
-    core.debug('Input is correct')
-  }
-
-  const regex1: RegExp = RegExp('^\\d*$')
-  core.debug(`Hard coded: ${regex1}`)
-
-  if (regex == regex1) {
-    core.debug('Regex is the same')
-  }
+  const regex = RegExp(core.getInput('regex'))
 
   for (const file of fileNames) {
-    core.debug(`File: ${file}`)
-    core.debug(regex.test(file) ? 'true' : 'false')
-
-    if (regex1.test(file)) {
-      core.debug(`Hard coded regex works for ${file}`)
-    }
-
     if (regex.test(file)) {
       core.debug(`Add link for file ${file}`)
       addLink(file, username)
