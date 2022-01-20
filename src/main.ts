@@ -14,6 +14,10 @@ async function run(): Promise<void> {
         await addSubmodule(url)
       }
     }
+
+    if (core.getInput('reload_submodules') === 'true') {
+      reloadAllSubmodules()
+    }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
@@ -37,6 +41,21 @@ async function addSubmodule(url: string): Promise<void> {
   for (const file of fileNames) {
     if (file.match(regex) != null) {
       addLink(file, username)
+    }
+  }
+}
+
+async function reloadAllSubmodules(): Promise<void> {
+  const submoduleNames: string[] = fs.readdirSync('./submodules')
+
+  for (const submoduleName of submoduleNames) {
+    const fileNames: string[] = fs.readdirSync(`./submodules/${submoduleName}`)
+    const regex = new RegExp(core.getInput('regex'))
+
+    for (const file of fileNames) {
+      if (file.match(regex) != null) {
+        addLink(file, submoduleName)
+      }
     }
   }
 }
