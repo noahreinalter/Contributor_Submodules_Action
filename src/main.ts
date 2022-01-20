@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as fs from 'fs'
 import * as github from '@actions/github'
+import { debug } from 'console'
 
 async function run(): Promise<void> {
   if (!checkIfValidUser()) return
@@ -38,8 +39,24 @@ async function addSubmodule(url: string): Promise<void> {
   core.debug(core.getInput('regex'))
   core.debug(regex.source)
 
+  if (core.getInput('regex') === '^\\d*$') {
+    core.debug('Input is correct')
+  }
+
+  const regex1: RegExp = RegExp('^\\d*$')
+
+  if (regex == regex1) {
+    core.debug('Regex is the same')
+  }
+
   for (const file of fileNames) {
     core.debug(`File: ${file}`)
+    core.debug(regex.test(file) ? 'true' : 'false')
+
+    if (regex1.test(file)) {
+      core.debug(`Hard coded regex works for ${file}`)
+    }
+
     if (regex.test(file)) {
       core.debug(`Add link for file ${file}`)
       addLink(file, username)
