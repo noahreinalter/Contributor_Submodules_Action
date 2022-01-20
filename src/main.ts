@@ -21,9 +21,11 @@ async function run(): Promise<void> {
       `There are ${fileNames.length.toString()} files in the new submodule`
     )
 
+    const regex = new RegExp(core.getInput('regex'))
+
     for (const file of fileNames) {
       core.debug(file)
-      if (file.match(/^\d*$/) != null) {
+      if (file.match(regex) != null) {
         addLink(file, username)
       }
     }

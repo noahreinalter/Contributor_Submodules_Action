@@ -10,6 +10,9 @@ inputs:
   users:
     description: 'Allowed users(space separated) to add new submodules'
     required: true
+  regex:
+    description: 'Regex for the folders to link'
+    default: '/^\d*$/'
 runs:
   using: 'node12'
   main: 'dist/index.js'
