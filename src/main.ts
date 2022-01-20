@@ -35,6 +35,8 @@ async function addSubmodule(url: string): Promise<void> {
 
   const regex = new RegExp(core.getInput('regex'))
 
+  core.debug(regex.source)
+
   for (const file of fileNames) {
     if (file.match(regex) != null) {
       addLink(file, username)
