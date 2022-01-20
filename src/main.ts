@@ -33,7 +33,7 @@ async function addSubmodule(url: string): Promise<void> {
     `There are ${fileNames.length.toString()} files in the new submodule`
   )
 
-  const regex = new RegExp(core.getInput('regex'))
+  const regex = RegExp(core.getInput('regex'))
 
   core.debug(core.getInput('regex'))
   core.debug(regex.source)
@@ -52,7 +52,7 @@ async function reloadAllSubmodules(): Promise<void> {
 
   for (const submoduleName of submoduleNames) {
     const fileNames: string[] = fs.readdirSync(`./submodules/${submoduleName}`)
-    const regex = new RegExp(core.getInput('regex'))
+    const regex = RegExp(core.getInput('regex'))
 
     for (const file of fileNames) {
       if (file.match(regex) != null) {
