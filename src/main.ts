@@ -8,11 +8,8 @@ async function run(): Promise<void> {
 
   try {
     const url: string = core.getInput('url')
-    if (url != null) {
-      const regex = new RegExp(core.getInput('regex'))
-      if (url.match(regex)) {
-        await addSubmodule(url)
-      }
+    if (url != null && url.match(/^https:\/\/.*\.git$/)) {
+      await addSubmodule(url)
     }
 
     if (core.getInput('reload_submodules') === 'true') {
