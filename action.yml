@@ -12,7 +12,7 @@ inputs:
     required: true
   regex:
     description: 'Regex for the folders to link'
-    default: '^\\d*$'
+    default: '^\d*$'
   reload_submodules:
     description: 'Adds links for submodules if they are missing'
     default: 'false'
