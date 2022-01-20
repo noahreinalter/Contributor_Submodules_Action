@@ -36,14 +36,14 @@ async function addSubmodule(url: string): Promise<void> {
 
   const regex: RegExp = RegExp(core.getInput('regex'))
 
-  core.debug(core.getInput('regex'))
-  core.debug(regex.source)
+  core.debug(core.getInput('regex').toString())
 
-  if (core.getInput('regex') === '^\\d*$') {
+  if (core.getInput('regex').toString() === '^\\d*$') {
     core.debug('Input is correct')
   }
 
   const regex1: RegExp = RegExp('^\\d*$')
+  core.debug(`Hard coded: ${regex1}`)
 
   if (regex == regex1) {
     core.debug('Regex is the same')
