@@ -8,28 +8,36 @@ async function run(): Promise<void> {
 
   try {
     const url: string = core.getInput('url')
-
-    const splitUrl: string[] = url.split('/')
-
-    const username: string = splitUrl[splitUrl.length - 2]
-
-    await exec.exec(`git submodule add ${url} submodules/${username}`)
-
-    const fileNames: string[] = fs.readdirSync(`./submodules/${username}`)
-
-    core.debug(
-      `There are ${fileNames.length.toString()} files in the new submodule`
-    )
-
-    const regex = new RegExp(core.getInput('regex'))
-
-    for (const file of fileNames) {
-      if (file.match(regex) != null) {
-        addLink(file, username)
+    if (url != null) {
+      const regex = new RegExp(core.getInput('regex'))
+      if (url.match(regex)) {
+        await addSubmodule(url)
       }
     }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
+  }
+}
+
+async function addSubmodule(url: string): Promise<void> {
+  const splitUrl: string[] = url.split('/')
+
+  const username: string = splitUrl[splitUrl.length - 2]
+
+  await exec.exec(`git submodule add ${url} submodules/${username}`)
+
+  const fileNames: string[] = fs.readdirSync(`./submodules/${username}`)
+
+  core.debug(
+    `There are ${fileNames.length.toString()} files in the new submodule`
+  )
+
+  const regex = new RegExp(core.getInput('regex'))
+
+  for (const file of fileNames) {
+    if (file.match(regex) != null) {
+      addLink(file, username)
+    }
   }
 }
 
