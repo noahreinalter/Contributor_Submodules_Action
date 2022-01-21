@@ -7,9 +7,6 @@ branding:
 inputs:
   url:
     description: 'Url to the git repo'
-  users:
-    description: 'Allowed users(space separated) to add new submodules'
-    required: true
   regex:
     description: 'Regex for the folders to link'
     default: '^\d*$'

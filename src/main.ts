@@ -1,11 +1,8 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as fs from 'fs'
-import * as github from '@actions/github'
 
 async function run(): Promise<void> {
-  if (!checkIfValidUser()) return
-
   try {
     const url: string = core.getInput('url')
     if (url != null && url.match(/^https:\/\/.*\.git$/)) {
@@ -67,17 +64,6 @@ async function addLink(targedName: string, username: string): Promise<void> {
   await exec.exec(
     `ln -s ../submodules/${username}/${targedName} ./${targedName}/${username}`
   )
-}
-
-function checkIfValidUser(): boolean {
-  for (const user of core.getInput('users').split(' ')) {
-    if (user === github.context.actor) {
-      core.debug(`${user}===${github.context.actor}`)
-      return true
-    }
-  }
-
-  return false
 }
 
 run()
