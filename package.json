@@ -1,6 +1,6 @@
 {
   "name": "contributor_submodules_action",
-  "version": "0.0.0",
+  "version": "1.2.2",
   "private": true,
   "description": "A Github Action that automates adding submodulesTypeScript template action",
   "main": "lib/main.js",
