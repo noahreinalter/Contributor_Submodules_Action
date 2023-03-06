@@ -1,6 +1,9 @@
 name: Build
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
@@ -21,5 +24,3 @@ jobs:
           git add .
           today=$(date +'%-d.%-m.%Y')
           git diff-index --quiet HEAD || (git commit -m "Updated build file ${today}" && git push)
-      - name: Latest tag
-        uses: EndBug/latest-tag@v1.5.1
