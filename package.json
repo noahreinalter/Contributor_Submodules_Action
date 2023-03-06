@@ -1,8 +1,8 @@
 {
   "name": "contributor_submodules_action",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "private": true,
-  "description": "A Github Action that automates adding submodulesTypeScript template action",
+  "description": "A Github Action that automates adding submodules",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
