@@ -4,7 +4,7 @@ A GitHub Action that automates adding submodules
 
 ```yaml
   - name: Contributor_Submodules_Action
-    uses: noahreinalter/Contributor_Submodules_Action@latest
+    uses: noahreinalter/Contributor_Submodules_Action@v2
       with:
         # The url of the submodule
         url: 'url'
