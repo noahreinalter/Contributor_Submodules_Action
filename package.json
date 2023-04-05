@@ -1,6 +1,6 @@
 {
   "name": "contributor_submodules_action",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "A Github Action that automates adding submodules",
   "main": "lib/main.js",
