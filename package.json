@@ -1,13 +1,13 @@
 {
   "name": "contributor_submodules_action",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "private": true,
   "description": "A Github Action that automates adding submodules",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write '**/*.ts'",
-    "format-check": "prettier --check '**/*.ts'",
+    "format": "prettier --write \"**/*.ts\"",
+    "format-check": "prettier --check \"**/*.ts\"",
     "lint": "eslint src/**/*.ts",
     "fix-lint": "eslint src/**/*.ts --fix",
     "package": "ncc build -m --source-map --license licenses.txt",
