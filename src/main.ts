@@ -1,25 +1,25 @@
-import * as core from '@actions/core'
-import * as exec from '@actions/exec'
-import * as fs from 'fs'
+import {getInput, setFailed, debug} from '@actions/core'
+import {exec as exec_exec} from '@actions/exec'
+import {readdirSync, existsSync, mkdirSync} from 'fs'
 
 async function run(): Promise<void> {
   try {
-    const url: string = core.getInput('url')
-    const path: string = core.getInput('submodule_save_location')
+    const url: string = getInput('url')
+    const path: string = getInput('submodule_save_location')
 
-    if (core.getInput('update_submodules') === 'true') {
-      await exec.exec('git submodule update --remote')
+    if (getInput('update_submodules') === 'true') {
+      await exec_exec('git submodule update --remote')
     }
 
     if (url != null && url.match(/^https:\/\/.*\.git$/)) {
       await addSubmodule(url, path)
     }
 
-    if (core.getInput('relink_submodules') === 'true') {
+    if (getInput('relink_submodules') === 'true') {
       reloadAllSubmodules(path)
     }
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) setFailed(error.message)
   }
 }
 
@@ -28,30 +28,28 @@ async function addSubmodule(url: string, path: string): Promise<void> {
 
   const username: string = splitUrl[splitUrl.length - 2]
 
-  await exec.exec(`git submodule add ${url} ${path}/${username}`)
+  await exec_exec(`git submodule add ${url} ${path}/${username}`)
 
-  const fileNames: string[] = fs.readdirSync(`./${path}/${username}`)
+  const fileNames: string[] = readdirSync(`./${path}/${username}`)
 
-  core.debug(
-    `There are ${fileNames.length.toString()} files in the new submodule`
-  )
+  debug(`There are ${fileNames.length.toString()} files in the new submodule`)
 
-  const regex = RegExp(core.getInput('regex'))
+  const regex = RegExp(getInput('regex'))
 
   for (const file of fileNames) {
     if (regex.test(file)) {
-      core.debug(`Add link for file ${file}`)
+      debug(`Add link for file ${file}`)
       addLink(file, username, path)
     }
   }
 }
 
 async function reloadAllSubmodules(path: string): Promise<void> {
-  const submoduleNames: string[] = fs.readdirSync(`./${path}`)
+  const submoduleNames: string[] = readdirSync(`./${path}`)
 
   for (const submoduleName of submoduleNames) {
-    const fileNames: string[] = fs.readdirSync(`./${path}/${submoduleName}`)
-    const regex = RegExp(core.getInput('regex'))
+    const fileNames: string[] = readdirSync(`./${path}/${submoduleName}`)
+    const regex = RegExp(getInput('regex'))
 
     for (const file of fileNames) {
       if (regex.test(file)) {
@@ -66,12 +64,12 @@ async function addLink(
   username: string,
   path: string
 ): Promise<void> {
-  core.debug(`Add ${targedName} for ${username} if necessary`)
-  if (!fs.existsSync(targedName)) {
-    core.debug(`Create dir ${targedName}`)
-    fs.mkdirSync(targedName)
+  debug(`Add ${targedName} for ${username} if necessary`)
+  if (!existsSync(targedName)) {
+    debug(`Create dir ${targedName}`)
+    mkdirSync(targedName)
   }
-  await exec.exec(
+  await exec_exec(
     `ln -s ../${path}/${username}/${targedName} ./${targedName}/${username}`
   )
 }
