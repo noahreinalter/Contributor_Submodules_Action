@@ -1,7 +1,8 @@
 {
   "name": "contributor_submodules_action",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "private": true,
+  "type": "module",
   "description": "A Github Action that automates adding submodules",
   "main": "lib/main.js",
   "scripts": {
@@ -24,8 +25,8 @@
   "author": "noahreinalter",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^2.0.2",
-    "@actions/exec": "^2.0.0"
+    "@actions/core": "^3.0.0",
+    "@actions/exec": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
